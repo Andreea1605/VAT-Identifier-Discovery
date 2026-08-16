@@ -6,7 +6,7 @@ The problem looked simple at first, but three things make it harder than a stand
 **Second,** not every company is VAT-registered. This means a "not found" result is ambiguous: it could mean the company genuinely has no VAT number, or it could mean my method failed to find one that exists. Distinguishing between these two cases matters for reporting honest results.
 **Third,** the two types of errors this process can produce are not equally costly. A missing VAT number is a visible gap - easy to spot and flag. A wrong VAT number attached to the wrong company is invisible unless checked, and it silently corrupts every downstream join that relies on it. Because there is no complete reference dataset to validate against, avoiding this second type of error is the harder and more important constraint to design around.
 
---
+---
 
 ## Part 1: Data Profiling, Sampling Methodology & Research
 **1. Initial Dataset & Memory Management:** 
