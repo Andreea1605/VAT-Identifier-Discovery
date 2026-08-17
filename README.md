@@ -19,13 +19,13 @@ Before sampling, I analyzed the `SICCode.SicText_1` (industry domain) column to 
 *	**Data Quality Issue:** I identified that 216,285 active companies (4.17% of the dataset) had invalid industry categorizations, explicitly marked as "None Supplied".
 *	**Conclusion:** I dropped these records from the active dataframe. First, because without a declared industry, they cannot be included in the top 10 sectors analysis. Second, companies that fail to declare their basic activity are usually very small businesses, which have a very low chance of being registered for VAT.
 
-3. **Stratified Sampling Strategy:**
+**3. Stratified Sampling Strategy:**
 To build a highly representative "Proof of Concept" sample for VAT number extraction, a random sample from the 5.19 million companies would be statistically inefficient. Instead, I applied a stratified sampling approach:
 *	**Top 10 Industries:** I aggregated the cleaned data using `.value_counts()` and isolated the top 10 largest industries in the UK by volume. Targeting these core sectors maximizes the probability of finding active B2B entities that meet the £90,000 mandatory VAT registration threshold.
 *	**Final Extraction:** I grouped the data by these 10 industries and randomly sampled exactly 10 companies from each (`random_state=36`).
 *	**Result:** A perfectly balanced, clean sample of 100 companies, providing a manageable and highly relevant subset for manual investigation before attempting to write an automated scraping algorithm.
 
-4. **The Trail & The Dead Ends (Manual Investigation):**
+**4. The Trail & The Dead Ends (Manual Investigation):**
 What wasn't obvious at the start is that a 'Not Found' result is rarely a scraping failure; it is usually an accurate reflection of how public data is restricted.
 ### Dead End 1: Paywalls and the "Ambiguous NULL"
 I started searching on Google for Company 1: SELBUD LIMITED (14918826) using a strict search query: `"SELBUD LIMITED 14918826 VAT"`. The result was 0 documents, proving that strict searches fail if the company doesn't have a strong online presence. Searching just by name and number led me to the official government website, Companies House. The "Filing history" tab contained free PDFs of "Micro company accounts." While official, this data is unstructured, and micro-entities are legally allowed to exclude tax data from these documents. This led me to commercial data platforms like Endole. Endole provides a lot of value by reading those official PDFs and displaying the information clearly on their platform, but because it is a private business, it blocks the company's contact details and website links behind a premium paywall.
