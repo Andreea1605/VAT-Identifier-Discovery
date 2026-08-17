@@ -70,7 +70,7 @@ To automate website discovery for this new sample, I used Claude to scaffold a s
 Manually inspecting the 2 `not_found` results (Breach Farm Energy Storage Limited, Ranksborough Solar Limited) showed the "websites" found were `companieslist.co.uk` and `ukcompanydir.com` - aggregator directories, not the companies' own sites, since these domains were not in my ignore-list filter. This means automated discovery found zero genuine company websites out of 100, not 2 - and shows that an ignore-list approach to filtering aggregators is inherently incomplete.
 
 ### Dead End 8: Bing Search Result Extraction Failure
-As an alternative to DuckDuckGo, I tested scraping Bing's search results page. The request succeeded (HTTP 200, correct page title), and my CSS selector matched 10 results. However, decoding the actual destination URL from Bing's redirect link revealed it pointed to Bing's own internal image search page (`/images/search?q=...`), not to an external company website.
+As an alternative to DuckDuckGo, I tested scraping Bing's search results page. The request succeeded (HTTP 200, correct page title), and my CSS selector matched 9 results. However, decoding the actual destination URL from Bing's redirect link revealed it pointed to Bing's own internal image search page (`/images/search?q=...`), not to an external company website.
 
 > **Why it failed:** Bing's result links are wrapped in tracking redirects with an undocumented encoding, and the selector I used matched an image-carousel element rather than an organic search result. Unlike DuckDuckGo's straightforward redirect format, extracting real URLs from Bing's HTML would require further reverse-engineering with no guarantee of stability.
 
@@ -127,7 +127,7 @@ Two things go out of date here. First, the Companies House file itself — it's 
 * **How would I know the dataset was wrong at scale, with nothing complete to compare against?**
 The only ground truth I had access to in this project was HMRC's checker itself, used company-by-company. At scale, I would rely on the same mechanism systematically: for every VAT number in the dataset, periodically re-verify it against HMRC and check that the returned name/address still matches the target company - this is exactly the check that caught both false positives (Cruden, Geo Houlton) in this project. Beyond that, I don't have a tested method for catching errors with no reference dataset at all; this is a real limitation I ran into, not something I solved.
 
-* **4.	Which sources would I not be comfortable using in a product I sell, and why?**
+* **Which sources would I not be comfortable using in a product I sell, and why?**
 Based on what I tested: vat-search.co.uk and vatverifier.com (Dead End 2) - both displayed partially hidden VAT numbers and pushed toward account creation, and I was unable to verify whether the hidden digits were even real. I would not use either in a product, since I have no evidence their data is accurate and the presentation pattern (blur + signup prompt) is consistent with lead generation rather than a verified data source. I would also be cautious about DuckDuckGo/Bing HTML scraping (Dead Ends 7-8) - not for accuracy reasons, but because both are unauthenticated use of a search engine's website rather than a sanctioned API, which is not a stable or appropriate foundation for a paid product.
 
 ---
